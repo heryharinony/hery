@@ -1,0 +1,19 @@
+{
+	"compatibility_date": "2026-05-12",
+	"compatibility_flags": ["global_fetch_strictly_public"],
+	"name": "hery",
+	"main": "@astrojs/cloudflare/entrypoints/server",
+	"assets": {
+		"directory": "./dist",
+		"binding": "ASSETS"
+	},
+	"kv_namespaces": [
+		{
+		"binding": "SESSION",
+		"id": "ec798e6c5fdb49ae83899ffc9be9d62b"
+		}
+	],
+	"observability": {
+		"enabled": true
+	}
+}
