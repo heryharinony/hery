@@ -1,0 +1,43 @@
+---
+import Services2, { type Service } from "./Services2.astro";
+
+const services: Service[] = [
+  {
+    title: "Tax Preparation",
+    description:
+      "Comprehensive tax preparation services for individuals and businesses. We ensure accuracy and maximize your deductions.",
+    href: "#",
+  },
+  {
+    title: "Bookkeeping",
+    description:
+      "Keep your finances organized with our professional bookkeeping services. Monthly reconciliation and detailed reporting.",
+    href: "#",
+  },
+  {
+    title: "Financial Planning",
+    description:
+      "Strategic financial planning to help you achieve your short-term and long-term financial goals.",
+    href: "#",
+  },
+  {
+    title: "Business Consulting",
+    description:
+      "Expert advice on business structure, growth strategies, and operational efficiency improvements.",
+    href: "#",
+  },
+  {
+    title: "Payroll Services",
+    description:
+      "Reliable payroll processing, tax filings, and compliance management for businesses of all sizes.",
+    href: "#",
+  },
+];
+---
+
+<Services2
+  badge="Our Services"
+  heading="Accounting Solutions"
+  description="Professional accounting services to help your business thrive. From tax preparation to strategic planning, we've got you covered."
+  services={services}
+/>

@@ -1,0 +1,71 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { tv } from "tailwind-variants";
+
+import { Button } from "@/components/starwind/button";
+
+interface Props extends HTMLAttributes<"section"> {
+  /** Main heading text */
+  heading?: string;
+  /** Description text */
+  description?: string;
+  /** Primary button text */
+  primaryButtonText?: string;
+  /** Primary button href */
+  primaryButtonHref?: string;
+  /** Secondary button text */
+  secondaryButtonText?: string;
+  /** Secondary button href */
+  secondaryButtonHref?: string;
+  /** Layout variant */
+  variant?: "base" | "centered";
+}
+
+const hero2Styles = tv({
+  base: "@container mx-auto w-full max-w-7xl px-4 py-24",
+  variants: {
+    variant: {
+      base: "",
+      centered: "",
+    },
+  },
+  defaultVariants: {
+    variant: "base",
+  },
+});
+
+const {
+  heading = "Ship Faster with Modern Components",
+  description = "Build production-ready websites with our comprehensive component library. Everything you need to create beautiful, responsive interfaces that users love.",
+  primaryButtonText = "Start Building",
+  primaryButtonHref = "#",
+  secondaryButtonText,
+  secondaryButtonHref = "#",
+  variant = "base",
+  class: className,
+  ...rest
+} = Astro.props;
+
+const isCentered = variant === "centered";
+---
+
+<section class={hero2Styles({ variant, class: className })} {...rest}>
+  <div class:list={["flex flex-col", isCentered ? "items-center text-center max-w-3xl mx-auto" : "max-w-3xl"]}>
+    <h1 class="font-heading text-4xl font-medium tracking-tight @xl:text-5xl @3xl:text-6xl">
+      {heading}
+    </h1>
+    <p class:list={["text-muted-foreground mt-6 @xl:text-lg", isCentered ? "max-w-2xl" : ""]}>
+      {description}
+    </p>
+    <div class:list={["mt-8 flex flex-wrap gap-3", isCentered ? "justify-center" : ""]}>
+      <Button variant="primary" href={primaryButtonHref}>{primaryButtonText}</Button>
+      {
+        secondaryButtonText && (
+          <Button variant="outline" href={secondaryButtonHref}>
+            {secondaryButtonText}
+          </Button>
+        )
+      }
+    </div>
+  </div>
+</section>

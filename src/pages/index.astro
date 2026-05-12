@@ -1,4 +1,10 @@
 ---
+import "../styles/global.css"
+import "../styles/starwind.css";
+import Navbar1 from "@/components/starwind-pro/navbar-01/Navbar1.astro";
+import Footer1 from "@/components/starwind-pro/footer-01/Footer1.astro";
+import Hero2 from "@/components/starwind-pro/hero-02/Hero2.astro";
+import Services2 from "@/components/starwind-pro/services-02/Services2Demo.astro";
 
 ---
 
@@ -11,7 +17,10 @@
 		<meta name="generator" content={Astro.generator} />
 		<title>Astro</title>
 	</head>
-	<body>
-		<h1>Astro</h1>
+	<body class="dark">
+		<Navbar1></Navbar1>
+		<Hero2 variant="centered" />
+		<Services2></Services2>
+		<Footer1></Footer1>
 	</body>
 </html>
