@@ -1,6 +1,7 @@
 ---
 import IconMenu2 from "@tabler/icons/outline/menu-2.svg";
 import IconX from "@tabler/icons/outline/x.svg";
+import IconChevronDown from "@tabler/icons/outline/chevron-down.svg";
 import type { HTMLAttributes } from "astro/types";
 import { tv } from "tailwind-variants";
 
@@ -22,6 +23,8 @@ export interface NavLink {
   label: string;
   /** URL the link points to */
   href: string;
+  /** Whether to show a dropdown chevron */
+  hasDropdown?: boolean;
 }
 
 interface Props extends HTMLAttributes<"nav"> {
@@ -33,11 +36,18 @@ interface Props extends HTMLAttributes<"nav"> {
   ctaText?: string;
   /** Primary CTA button href */
   ctaHref?: string;
+  /** Sign in link text
+  signInText?: string; */
+  /** Sign in link href 
+  signInHref?: string;*/
 }
 
-// you could also swap "sticky" for "fixed"
+const navWrapperStyles = tv({
+  base: "sticky inset-x-0 top-0 z-50 flex justify-center @container",
+});
+
 const navStyles = tv({
-  base: "bg-background/60 sticky @container inset-x-0 top-0 z-50 border-b backdrop-blur",
+  base: "mx-auto w-full pt-4",
 });
 
 const {
@@ -52,84 +62,124 @@ const {
 const hasLogoSlot = Astro.slots.has("logo");
 ---
 
-<nav class={navStyles({ class: className })} {...rest}>
-  <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4">
-    <!-- Logo / Site Name -->
-    <div class="flex shrink-0 items-center">
-      {
-        hasLogoSlot ? (
-          <slot name="logo" />
-        ) : (
-          <a href="/" class="text-lg font-semibold">
-            {siteName}
-          </a>
-        )
-      }
-    </div>
+<div class={navWrapperStyles()}>
+  <nav class={navStyles({ class: className })} {...rest}>
+    <div class="bg-gray-900/25 backdrop-blur-md border border-white/10 rounded-2xl shadow-2xl mx-auto w-full max-w-7xl flex h-14 justify-between px-4">
+      
+      <!-- Logo / Site Name -->
+      <div class="flex shrink-0 items-center">
+        {
+          hasLogoSlot ? (
+            <slot name="logo" />
+          ) : (
+            <a href="/" class="text-white text-base font-bold tracking-tight">
+              {siteName}
+            </a>
+          )
+        }
+      </div>
 
-    <!-- Desktop Navigation Links -->
-    <div class="hidden items-center gap-1 @2xl:flex">
-      {
-        links.map((link) => (
-          <a
-            href={link.href}
-            class="text-muted-foreground hover:text-foreground rounded-md px-3 py-2 text-sm font-medium transition-colors"
-          >
-            {link.label}
-          </a>
-        ))
-      }
-    </div>
+      <!-- Desktop Navigation Links -->
+      <div class="hidden items-center gap-0.5 @2xl:flex">
+        {
+          links.map((link) => (
+            <a
+              href={link.href}
+              class="text-gray-300 hover:text-white flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-150"
+            >
+              {link.label}
 
-    <!-- Desktop CTA Button -->
-    <div class="hidden @2xl:block">
-      <Button href={ctaHref}>{ctaText}</Button>
-    </div>
+              {link.hasDropdown && (
+                <IconChevronDown class="size-3.5 text-gray-400 mt-px" />
+              )}
+            </a>
+          ))
+        }
+      </div>
 
-    <!-- Mobile Menu Button -->
-    <div class="@2xl:hidden">
-      <Sheet>
-        <SheetTrigger asChild>
-          <Button variant="ghost" size="icon" class="[&_svg]:size-8" aria-label="Open menu">
-            <IconMenu2 />
-          </Button>
-        </SheetTrigger>
-        <SheetContent side="right" class="max-w-[280px] sm:max-w-[300px]">
-          <SheetHeader>
-            <SheetTitle>
+      <!-- Desktop Right Actions -->
+      <div class="hidden items-center gap-2 @2xl:flex">
+        <!-- <Button
+          href={signInHref}
+          class="text-gray-300 hover:text-white px-3 py-2 text-sm font-medium transition-colors duration-150"
+        >
+          {signInText}
+        </Button> -->
+
+        <Button
+          href={ctaHref}
+          variant="default"
+          size="sm"
+        >
+          {ctaText}
+        </Button>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <div class="@2xl:hidden">
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              class="[&_svg]:size-6 text-white hover:bg-white/10 mt-1"
+              aria-label="Open menu"
+            >
+              <IconMenu2 />
+            </Button>
+          </SheetTrigger>
+
+          <SheetContent side="top" class="min-w-screen">
+            <SheetHeader>
+              <SheetTitle>
+                {
+                  hasLogoSlot ? (
+                    <slot name="logo" />
+                  ) : (
+                    <span class="text-xl font-bold">{siteName}</span>
+                  )
+                }
+              </SheetTitle>
+
+              <Separator class="mt-2" />
+            </SheetHeader>
+
+            <div class="-mt-5 flex flex-col px-4">
               {
-                hasLogoSlot ? (
-                  <slot name="logo" />
-                ) : (
-                  <span class="text-xl font-semibold">{siteName}</span>
-                )
+                links.map((link) => (
+                  <SheetClose asChild>
+                    <a
+                      href={link.href}
+                      class="text-muted-foreground hover:text-foreground -mx-3 rounded-md px-3 py-2 text-lg font-medium transition-colors"
+                    >
+                      {link.label}
+                    </a>
+                  </SheetClose>
+                ))
               }
-            </SheetTitle>
-            <Separator class="mt-2" />
-          </SheetHeader>
+            </div>
 
-          <div class="-mt-5 flex flex-col px-4">
-            {
-              links.map((link) => (
-                <SheetClose asChild>
-                  <a
-                    href={link.href}
-                    class="text-muted-foreground hover:text-foreground -mx-3 rounded-md px-3 py-2 text-lg font-medium transition-colors"
-                  >
-                    {link.label}
-                  </a>
-                </SheetClose>
-              ))
-            }
-          </div>
-          <SheetFooter>
-            <SheetClose asChild>
-              <Button href={ctaHref} class="w-full">{ctaText}</Button>
-            </SheetClose>
-          </SheetFooter>
-          <IconX class="size-7" slot="icon" />
-        </SheetContent>
-      </Sheet>
+            <SheetFooter class="flex flex-col gap-2">
+              <!-- <SheetClose asChild>
+                <a
+                  href={signInHref}
+                  class="text-muted-foreground hover:text-foreground w-full rounded-md px-3 py-2 text-center text-sm font-medium transition-colors"
+                >
+                  {signInText}
+                </a>
+              </SheetClose> -->
+
+              <SheetClose asChild>
+                <Button href={ctaHref} class="w-full">
+                  {ctaText}
+                </Button>
+              </SheetClose>
+            </SheetFooter>
+
+            <IconX class="size-7" slot="icon" />
+          </SheetContent>
+        </Sheet>
+      </div>
     </div>
-  </div>
-</nav>
+  </nav>
+</div>

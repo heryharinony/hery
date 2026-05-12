@@ -14,10 +14,10 @@ const { side = "right", class: className, ...rest } = Astro.props;
 
 export const dialogBackdrop = tv({
   base: [
-    "starwind-dialog-backdrop fixed inset-0 top-0 left-0 z-50 hidden h-screen w-screen bg-black/80",
+    "starwind-dialog-backdrop fixed inset-0 top-0 left-0 z-50 hidden h-screen w-screen bg-black/8",
     "data-[state=open]:animate-in fade-in",
     "data-[state=closed]:animate-out data-[state=closed]:fill-mode-forwards fade-out",
-    "data-[state=closed]:duration-300 data-[state=open]:duration-500",
+    "data-[state=closed]:duration-300 data-[state=open]:duration-200",
   ],
 });
 
@@ -26,13 +26,13 @@ export const sheetContent = tv({
     "starwind-dialog-content",
     "bg-background fixed z-50 flex-col gap-4 shadow-lg transition ease-in-out open:flex",
     "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fill-mode-forwards",
-    "data-[state=closed]:duration-300 data-[state=open]:duration-500",
+    "data-[state=closed]:duration-200 data-[state=open]:duration-200",
   ],
   variants: {
     side: {
       right: [
         "slide-out-to-right slide-in-from-right",
-        "inset-y-0 right-0 left-auto h-full max-h-[100dvh] w-3/4 border-l sm:max-w-sm",
+        "inset-y-0 right-0 left-auto h-full max-h-[100dvh] w-screen",
       ],
       left: [
         "slide-out-to-left slide-in-from-left",
